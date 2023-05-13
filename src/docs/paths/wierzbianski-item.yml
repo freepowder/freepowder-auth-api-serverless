@@ -1,0 +1,21 @@
+put:
+  tags:
+    - wierzbianski
+  summary: Update the content for wierzbianski site
+  description: Returns content for the site
+  operationId: setWierzbianskiContent
+  parameters:
+    - in: path
+      name: contentId
+      schema:
+        type: string
+      required: true
+  responses:
+    "200":
+      description: success
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/wierzbianski-item.yml"
+    default:
+      $ref: "../responses/error.yml"

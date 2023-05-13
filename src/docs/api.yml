@@ -1,0 +1,20 @@
+openapi: 3.0.0
+info:
+  description: BFF for Free Powder
+  version: 1.0.0
+  title: Free Powder API
+
+servers:
+  - url: /api
+
+paths:
+  /auth/signin:
+    $ref: "./paths/sign-in.yml"
+  /auth/signup:
+    $ref: "./paths/sign-up.yml"
+  /auth/signout:
+    $ref: "./paths/sign-out.yml"
+  /wierzbianski/content:
+    $ref: "./paths/wierzbianski-list.yml"
+  /wierzbianski/content/{contentId}:
+    $ref: "./paths/wierzbianski-item.yml"

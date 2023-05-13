@@ -1,0 +1,26 @@
+post:
+  tags:
+    - authentication
+  summary: De authenticate users
+  description: Returns the user and the jwt auth token as null
+  operationId: signOut
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+            password:
+              type: string
+  responses:
+    "200":
+      description: success
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/auth.yml"
+    default:
+      $ref: "../responses/error.yml"
