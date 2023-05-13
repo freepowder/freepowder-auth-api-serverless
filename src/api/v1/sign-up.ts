@@ -1,7 +1,7 @@
 import type { RequestHandler } from "express";
 import APP_CONFIG  from "../../constants/env";
 import jwt from "jsonwebtoken";
-import {hashPassword} from "common/auth";
+import {hashPassword} from "../../common/auth";
 import crypto from "crypto";
 import User from '../../common/user.model';
 
