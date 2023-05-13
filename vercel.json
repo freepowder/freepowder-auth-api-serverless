@@ -22,7 +22,7 @@
       ]
     },
     {
-      "source": "/api.freepowder.io/(.*)",
+      "source": "api.freepowder.io/(.*)",
       "headers": [
         { "key": "Access-Control-Allow-Origin", "value": "*" }
       ]
