@@ -36,8 +36,17 @@ const start = async () => {
         const apiDefinition = await parser.validate("./src/docs/api.yml");
         const connect = connector(api, apiDefinition);
         console.log(' connect =============================================================');
-        await mongoose.connect(APP_CONFIG.db.uri )
-        console.log(' mongo =============================================================');
+        mongoose.connect(APP_CONFIG.db.uri ).then(
+            (d) => {
+                console.log(' mongo =============================================================');
+            },
+            (err) => {
+                console.log(' mongo error =============================================================');
+                console.log(err);
+                console.log(' mongo error =============================================================');
+            }
+         )
+
         const whitelist = APP_CONFIG.whitelist.split(',');
         app.use(cors( {origin: whitelist}))
         app.use((req, res, next) => {
