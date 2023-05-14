@@ -15,9 +15,11 @@ import type { JwtPayload } from "jsonwebtoken";
 import { errorHandler } from "./middleware";
 import * as api from "./api";
 import mongoose from 'mongoose';
+import MongoStore from 'connect-mongo'
 import session from "express-session";
 import passport from 'passport';
 import helmet from 'helmet';
+import { MongoClient } from 'mongodb'
 
 declare global {
   namespace Express {
@@ -36,16 +38,6 @@ const start = async () => {
         const apiDefinition = await parser.validate("./src/docs/api.yml");
         const connect = connector(api, apiDefinition);
         console.log(' connect =============================================================');
-        mongoose.connect(APP_CONFIG.db.uri ).then(
-            (d) => {
-                console.log(' mongo =============================================================');
-            },
-            (err) => {
-                console.log(' mongo error =============================================================');
-                console.log(err);
-                console.log(' mongo error =============================================================');
-            }
-         )
 
         const whitelist = APP_CONFIG.whitelist.split(',');
         app.use(cors( {origin: whitelist}))
@@ -63,7 +55,7 @@ const start = async () => {
                 res.sendStatus(200);
             } else { next(); }
         });
-
+        console.log(' cors =============================================================');
         app.use(bodyParser.json());
         app.use(
             expressjwt({
@@ -80,7 +72,7 @@ const start = async () => {
                 ]
             })
         );
-
+        console.log(' jwt =============================================================');
         app.use(compress({
             filter(req: Request, res: Response) {
                 return (/json|text|javascript|css|font|svg/)
@@ -94,6 +86,7 @@ const start = async () => {
         app.use(methodOverride());
         app.use(cookieParser(APP_CONFIG.CookieProps.Secret));
 
+
         // Logs
         app.use(
             morgan(":method :url :status :res[content-length] - :response-time ms")
@@ -103,6 +96,7 @@ const start = async () => {
             secret: APP_CONFIG.CookieProps.Secret,
             resave: true,
             saveUninitialized: true,
+            store: MongoStore.create({ mongoUrl: APP_CONFIG.db.uri })
         }));
         app.use(passport.initialize());
         app.use(passport.session());
@@ -111,7 +105,7 @@ const start = async () => {
             res.locals.user = req.auth;
             next();
         });
-
+        console.log(' passport =============================================================');
         app.use(helmet.frameguard());
         app.use(helmet.xssFilter());
         app.use(helmet.noSniff());
@@ -121,7 +115,7 @@ const start = async () => {
             includeSubDomains: true,
         }));
         app.disable('x-powered-by');
-
+        console.log(' helmet =============================================================');
         // Routes
         app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(apiDefinition));
         connect(app);
@@ -143,10 +137,8 @@ const start = async () => {
         }
     } catch(e) {
         console.log('catch =============================================================');
-
         console.log(e);
     }
-
 
 };
 

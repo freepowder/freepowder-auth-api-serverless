@@ -4,15 +4,19 @@ import jwt from "jsonwebtoken";
 import {hashPassword} from "../common/auth";
 import crypto from "crypto";
 import User from '../common/user.model';
+import {connectToDatabase} from "../common/mongo-db";
 
-export const signUp: RequestHandler = (req, res, next) => {
+export const signUp: RequestHandler = async (req, res, next) => {
+
+    const { database } = await connectToDatabase();
+    const collection = database.collection('users');
 
     delete req.body.roles;
     const user = new User(req.body);
     user['provider'] = 'local';
     user['salt'] = crypto.randomBytes(16).toString('base64');
     user['password'] = hashPassword(req.body.password, user['salt']);
-    user.save()
+    collection.save(user)
         .then((_user) => {
             _user['salt'] = undefined;
             _user['password'] = undefined;

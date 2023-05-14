@@ -12,6 +12,7 @@ export default {
   whitelist:  process.env.WHITELIST,
   db: {
     uri: process.env.MONGO,
+    table: process.env.DB
   },
   secure: {
     ssl: false,

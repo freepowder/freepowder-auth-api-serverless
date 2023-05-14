@@ -1,9 +1,12 @@
 import type { RequestHandler } from "express";
-import Content from '../common/content.model';
+import { connectToDatabase } from "../common/mongo-db";
 
-export const getWierzbianskiContentList: RequestHandler = (req, res, next) => {
 
-    Content.find({}).then((content) => {
+export const getWierzbianskiContentList: RequestHandler = async (req, res, next) => {
+
+    const { database } = await connectToDatabase();
+    const collection = database.collection('contents');
+    collection.find({}).then((content) => {
         res.status(200).json(content);
     })
     .catch((err) => {
