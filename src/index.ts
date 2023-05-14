@@ -14,12 +14,9 @@ import cookieParser from 'cookie-parser';
 import type { JwtPayload } from "jsonwebtoken";
 import { errorHandler } from "./middleware";
 import * as api from "./api";
-import mongoose from 'mongoose';
-import MongoStore from 'connect-mongo'
-import session from "express-session";
+import session from "express-cookie";
 import passport from 'passport';
 import helmet from 'helmet';
-import { MongoClient } from 'mongodb'
 
 declare global {
   namespace Express {
@@ -38,7 +35,6 @@ const start = async () => {
         const apiDefinition = await parser.validate("./src/docs/api.yml");
         const connect = connector(api, apiDefinition);
         console.log(' connect =============================================================');
-
         const whitelist = APP_CONFIG.whitelist.split(',');
         app.use(cors( {origin: whitelist}))
         app.use((req, res, next) => {
@@ -96,7 +92,6 @@ const start = async () => {
             secret: APP_CONFIG.CookieProps.Secret,
             resave: true,
             saveUninitialized: true,
-            store: MongoStore.create({ mongoUrl: APP_CONFIG.db.uri })
         }));
         app.use(passport.initialize());
         app.use(passport.session());
