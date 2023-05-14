@@ -13,7 +13,7 @@ import methodOverride from 'method-override';
 import cookieParser from 'cookie-parser';
 import type { JwtPayload } from "jsonwebtoken";
 import { errorHandler } from "./middleware";
-import * as api from "./api/v1";
+import * as api from "api";
 import mongoose from 'mongoose';
 import session from "express-session";
 import passport from 'passport';
