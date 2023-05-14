@@ -1,5 +1,5 @@
 import type { RequestHandler } from "express";
-import Content from 'common/content.model';
+import Content from '../common/content.model';
 
 export const setWierzbianskiContent: RequestHandler = (req, res, next) => {
 
