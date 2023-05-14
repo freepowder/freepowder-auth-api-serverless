@@ -1,5 +1,5 @@
 import { MongoClient } from "mongodb";
-import APP_CONFIG from "constants/env";
+import APP_CONFIG from "../constants/env";
 
 const uri = APP_CONFIG.db.uri;
 const options = {
