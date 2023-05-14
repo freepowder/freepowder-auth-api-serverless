@@ -1,5 +1,5 @@
 import type { RequestHandler } from "express";
-import APP_CONFIG  from "constants/env";
+import APP_CONFIG  from "../constants/env";
 import jwt from "jsonwebtoken";
 import {authenticate} from "../common/auth";
 
