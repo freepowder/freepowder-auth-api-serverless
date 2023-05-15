@@ -4,7 +4,7 @@ import { connectToDatabase } from "../common/mongo-db";
 
 const resolveUser = async (email) => {
     const { database } = await connectToDatabase();
-    const collection = database.collection("contents");
+    const collection = database.collection("users");
     const user = await collection.findOne({ email: email });
     console.log('resolveUser ==> ', user);
     return user;
