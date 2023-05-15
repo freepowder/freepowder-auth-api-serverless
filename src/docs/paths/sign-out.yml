@@ -1,4 +1,4 @@
-post:
+get:
   tags:
     - authentication
   summary: De authenticate users
