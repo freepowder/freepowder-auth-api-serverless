@@ -2,11 +2,12 @@ import type { RequestHandler } from "express";
 import APP_CONFIG from "../constants/env";
 import { connectToDatabase } from "../common/mongo-db";
 import jwt from "jsonwebtoken";
+import {ObjectId} from "mongodb";
 
 const resolveContent = async (id) => {
   const { database } = await connectToDatabase();
   const collection = database.collection("contents");
-  const c = await collection.findOne({ _id: id });
+  const c = await collection.findById({ '_id': new ObjectId( id )});
   return c;
 };
 
@@ -46,6 +47,7 @@ export const setWierzbianskiContent: RequestHandler = (req, res, next) => {
             content["videos"] = req.body.videos;
             content["about"] = req.body.about;
             content["workReel"] = req.body.workReel;
+
             saveContent(content)
               .then((_content) => {
                 res.status(200).json(content);
