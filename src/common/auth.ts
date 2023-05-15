@@ -7,7 +7,7 @@ const resolveUser = async (email) => {
     const collection = database.collection("contents");
     const user = await collection.findOne({ email: email }).toObject();
     console.log('resolveUser ==> ', user);
-    return user[0];
+    return user;
 };
 
 
