@@ -1,14 +1,12 @@
 import crypto from "crypto";
 import { connectToDatabase } from "../common/mongo-db";
 
-
 const resolveUser = async (email) => {
-    const { database } = await connectToDatabase();
-    const collection = database.collection("users");
-    const user = await collection.findOne({ email: email });
-    return user;
+  const { database } = await connectToDatabase();
+  const collection = database.collection("users");
+  const user = await collection.findOne({ email: email });
+  return user;
 };
-
 
 /**
  * Authenticate users
@@ -18,7 +16,7 @@ const resolveUser = async (email) => {
  */
 export const authenticate = (email: string, password: string): Promise<any> => {
   return new Promise((resolve, reject) => {
-      resolveUser(email)
+    resolveUser(email)
       .then((user) => {
         if (
           !user ||
@@ -33,8 +31,7 @@ export const authenticate = (email: string, password: string): Promise<any> => {
       .catch((err) => {
         return reject(err);
       });
-  })
-
+  });
 };
 /**
  * Hash user password

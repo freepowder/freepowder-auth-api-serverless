@@ -10,7 +10,7 @@ const saveUser = async (user) => {
   const collection = database.collection("users");
   const emailExist = await collection.findOne({ email: user.email });
   if (emailExist) {
-      return null;
+    return null;
   }
   const content = await collection.insertOne(user);
   return content;
@@ -24,12 +24,13 @@ export const signUp: RequestHandler = (req, res, next) => {
   user["password"] = hashPassword(req.body.password, user["salt"]);
   saveUser(user)
     .then((data) => {
-        if(data === null) {
-            const  message = "Error creating a new user : duplicated Email : " + req.body.email;
-            return res.status(422).send({
-                message: message,
-            });
-        }
+      if (data === null) {
+        const message =
+          "Error creating a new user : duplicated Email : " + req.body.email;
+        return res.status(422).send({
+          message: message,
+        });
+      }
       user["salt"] = undefined;
       user["password"] = undefined;
       const token = jwt.sign(user, APP_CONFIG.Jwt.Secret, {

@@ -1,6 +1,10 @@
 import type { RequestHandler } from "express";
 import { connectToDatabase } from "../common/mongo-db";
 
+export const config = {
+  runtime: 'edge',
+}
+
 const resolveData = async () => {
   const { database } = await connectToDatabase();
   const collection = database.collection("contents");
