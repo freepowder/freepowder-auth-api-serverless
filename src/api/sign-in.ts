@@ -14,6 +14,6 @@ export const signIn: RequestHandler = (req, res, next) => {
       res.status(200).json({ user: user, token: token });
     })
     .catch((info) => {
-      res.status(422).send(info);
+      res.status(422).json({ message :info});
     });
 };

@@ -6,6 +6,7 @@ const resolveUser = async (email) => {
     const { database } = await connectToDatabase();
     const collection = database.collection("contents");
     const user = await collection.findOne({ email: email }).toArray();
+    console.log('resolveUser ==> ', user);
     return user[0];
 };
 
@@ -24,6 +25,7 @@ export const authenticate = (email: string, password: string): Promise<any> => {
           !user ||
           !comparePassword(password, user["password"], user["salt"])
         ) {
+            console.log('resolveUser reject then ==> ', user);
           return reject({
             message: "Invalid username or password ", // (' + (new Date()).toLocaleTimeString() + ')'
           });
@@ -31,6 +33,7 @@ export const authenticate = (email: string, password: string): Promise<any> => {
         return resolve(user);
       })
       .catch((err) => {
+          console.log('resolveUser reject catch ==> ', err);
         return reject(err);
       });
   })
