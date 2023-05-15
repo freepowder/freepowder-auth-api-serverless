@@ -1,20 +1,5 @@
-import {Strategy} from 'passport-local'
-import User from './user.model';
 import crypto from 'crypto';
-import passport from 'passport';
-
-// // serialize
-passport.serializeUser((user, done) => {
-	return done(null, user['_id']);
-});
-// Deserialize sessions
-passport.deserializeUser((id, done) => {
-	User.findById({
-		_id: id
-	}, '-salt -password', (err, user) => {
-		return done(err, user);
-	});
-});
+import {connectToDatabase} from "../common/mongo-db";
 
 	/**
 	 * Authenticate users
@@ -24,37 +9,24 @@ passport.deserializeUser((id, done) => {
 	 */
 	export const authenticate = (email: string, password: string): Promise<any> => {
 		return new Promise((resolve, reject) => {
-			User.findOne({ email: email })
-				.then((user) => {
-					if (!user || !comparePassword(password, user['password'], user['salt'])) {
-						return reject({
-							message: 'Invalid username or password '// (' + (new Date()).toLocaleTimeString() + ')'
-						});
-					}
-					return resolve(user);
-				})
-				.catch((err) => {
-					return reject(err);
-				});
-		})
-	}
-	export const passportAuthenticate = () =>{
-		return new Strategy({
-			usernameField: 'email',
-			passwordField: 'password'
-		}, (email, password, done) => {
-			User.findOne({ email: email })
-				.then((user) => {
-					if (!user || !user.schema.methods.comparePassword(password)) {
-						return done(null, false, {
-							message: 'Invalid username or password '// (' + (new Date()).toLocaleTimeString() + ')'
-						});
-					}
-					return done(null, user);
-				})
-				.catch((err) => {
-					return done(err);
-				});
+			connectToDatabase().then(({ database } ) => {
+				const collection = database.collection('users');
+				collection.findOne({ email: email })
+					.then((user) => {
+						if (!user || !comparePassword(password, user['password'], user['salt'])) {
+							return reject({
+								message: 'Invalid username or password '// (' + (new Date()).toLocaleTimeString() + ')'
+							});
+						}
+						return resolve(user);
+					})
+					.catch((err) => {
+						return reject(err);
+					});
+			})
+			.catch((err) => {
+				return reject(err);
+			});
 		})
 	}
 	/**

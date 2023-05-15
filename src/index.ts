@@ -1,6 +1,6 @@
 import APP_CONFIG from "./constants/env";
 import express from "express";
-import { NextFunction, Response, Request } from 'express';
+import { Response, Request } from 'express';
 import { connector } from "swagger-routes-express";
 import swaggerUi from "swagger-ui-express";
 import SwaggerParser from "@apidevtools/swagger-parser";
@@ -14,8 +14,6 @@ import cookieParser from 'cookie-parser';
 import type { JwtPayload } from "jsonwebtoken";
 import { errorHandler } from "./middleware";
 import * as api from "./api";
-import session from "express-cookie";
-import passport from 'passport';
 import helmet from 'helmet';
 
 declare global {
@@ -82,24 +80,11 @@ const start = async () => {
         app.use(methodOverride());
         app.use(cookieParser(APP_CONFIG.CookieProps.Secret));
 
-
         // Logs
         app.use(
             morgan(":method :url :status :res[content-length] - :response-time ms")
         )
-        // passport
-        app.use(session({
-            secret: APP_CONFIG.CookieProps.Secret,
-            resave: true,
-            saveUninitialized: true,
-        }));
-        app.use(passport.initialize());
-        app.use(passport.session());
 
-        app.use((req, res, next) => {
-            res.locals.user = req.auth;
-            next();
-        });
         console.log(' passport =============================================================');
         app.use(helmet.frameguard());
         app.use(helmet.xssFilter());
