@@ -8,7 +8,7 @@ export const signIn: RequestHandler = (req, res, next) => {
     .then((user) => {
       user.password = undefined;
       user.salt = undefined;
-      const token = jwt.sign(user.toObject(), APP_CONFIG.Jwt.Secret, {
+      const token = jwt.sign(user, APP_CONFIG.Jwt.Secret, {
         expiresIn: 15778476000,
       });
       res.status(200).json({ user: user, token: token });
