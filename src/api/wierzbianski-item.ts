@@ -8,15 +8,13 @@ const resolveContent = async (id) => {
   const { database } = await connectToDatabase();
   const collection = database.collection("contents");
   const c = await collection.findOne({ '_id': new ObjectId( id )});
-    console.log('resolveContent', c);
-    return c;
+  return c;
 };
 
-const saveContent = async (updatedContent) => {
+const saveContent = async (query,updatedContent) => {
   const { database } = await connectToDatabase();
   const collection = database.collection("contents");
-  const content = await collection.updateOne(updatedContent);
-    console.log('saveContent', content);
+  const content = await collection.updateOne(query, updatedContent);
     return content;
 };
 
@@ -45,17 +43,18 @@ export const setWierzbianskiContent: RequestHandler = (req, res, next) => {
           console.log('after verify');
         resolveContent(req["body"]._id)
           .then((content) => {
-              console.log('after resolve', content);
-
-            content["updated"] = new Date();
-            content["email"] = req.body.email;
-            content["phone"] = req.body.phone;
-            content["featured"] = req.body.featured;
-            content["videos"] = req.body.videos;
-            content["about"] = req.body.about;
-            content["workReel"] = req.body.workReel;
-
-            saveContent(content)
+              const query = { '_id': content._id };
+              const newvalues = { $set: {
+                      updated: new Date(),
+                      email:req.body.email,
+                      phone:req.body.phone,
+                      featured: req.body.featured,
+                      videos: req.body.videos,
+                      about: req.body.about,
+                      workReel: req.body.workReel,
+                }
+              };
+            saveContent(query, newvalues)
               .then((_content) => {
                   console.log('after save', content);
                   res.status(200).json(content);
