@@ -7,7 +7,7 @@ import {ObjectId} from "mongodb";
 const resolveContent = async (id) => {
   const { database } = await connectToDatabase();
   const collection = database.collection("contents");
-  const c = await collection.findById({ '_id': new ObjectId( id )});
+  const c = await collection.findById({ '_id.$oid': new ObjectId( id )});
   return c;
 };
 
