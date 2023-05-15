@@ -8,6 +8,8 @@ servers:
   - url: /api
 
 paths:
+  /:
+    $ref: "./paths/home.yml"
   /auth/signin:
     $ref: "./paths/sign-in.yml"
   /auth/signup:

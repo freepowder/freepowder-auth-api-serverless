@@ -1,16 +1,16 @@
 type: object
 properties:
   workReel:
-      type: object
-      properties:
-        title:
-          type: string
-          description: title of the video
-          nullable: true
-        url:
-          type: string
-          description: The URL of the video
-          nullable: true
+    type: object
+    properties:
+      title:
+        type: string
+        description: title of the video
+        nullable: true
+      url:
+        type: string
+        description: The URL of the video
+        nullable: true
   featured:
     type: array
     items:
@@ -46,4 +46,3 @@ properties:
   phone:
     type: string
     description: The phone number
-

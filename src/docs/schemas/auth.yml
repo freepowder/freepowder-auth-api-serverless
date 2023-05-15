@@ -17,4 +17,3 @@ properties:
     type: string
     description: jwt
     nullable: true
-
