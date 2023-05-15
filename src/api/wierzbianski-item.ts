@@ -15,7 +15,7 @@ const resolveContent = async (id) => {
 const saveContent = async (updatedContent) => {
   const { database } = await connectToDatabase();
   const collection = database.collection("contents");
-  const content = await collection.insertOne(updatedContent);
+  const content = await collection.updateOne(updatedContent);
     console.log('saveContent', content);
     return content;
 };
