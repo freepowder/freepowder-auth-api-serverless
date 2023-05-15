@@ -25,11 +25,14 @@ export const setWierzbianskiContent: RequestHandler = (req, res, next) => {
     req.headers.authorization &&
     req.headers.authorization.split(" ")[0] === "Bearer"
   ) {
+      console.log('before verify');
+      console.log('before verify ==> token ' , req.headers.authorization.split(" ")[1]);
     jwt.verify(
       req.headers.authorization.split(" ")[1],
       APP_CONFIG?.Jwt.Secret,
       (err, decoded) => {
         if (err) {
+            console.log('err verify');
           return res.status(401).json({
             site: "https://api.freepowder.com/",
             error: {
@@ -39,7 +42,7 @@ export const setWierzbianskiContent: RequestHandler = (req, res, next) => {
             },
           });
         }
-
+          console.log('after verify');
         resolveContent(req["body"]._id)
           .then((content) => {
               console.log('after resolve', content);
