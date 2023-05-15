@@ -8,14 +8,16 @@ const resolveContent = async (id) => {
   const { database } = await connectToDatabase();
   const collection = database.collection("contents");
   const c = await collection.findById({ '_id.$oid': new ObjectId( id )});
-  return c;
+    console.log('resolveContent', c);
+    return c;
 };
 
 const saveContent = async (updatedContent) => {
   const { database } = await connectToDatabase();
   const collection = database.collection("contents");
   const content = await collection.insertOne(updatedContent);
-  return content;
+    console.log('saveContent', content);
+    return content;
 };
 
 export const setWierzbianskiContent: RequestHandler = (req, res, next) => {
@@ -40,6 +42,8 @@ export const setWierzbianskiContent: RequestHandler = (req, res, next) => {
 
         resolveContent(req["body"]._id)
           .then((content) => {
+              console.log('after resolve', content);
+
             content["updated"] = new Date();
             content["email"] = req.body.email;
             content["phone"] = req.body.phone;
@@ -50,16 +54,17 @@ export const setWierzbianskiContent: RequestHandler = (req, res, next) => {
 
             saveContent(content)
               .then((_content) => {
-                res.status(200).json(content);
+                  console.log('after save', content);
+                  res.status(200).json(content);
               })
               .catch((err) => {
                 return res.status(422).send({
-                  message: err,
+                  message: "error saving",
                 });
               });
           })
           .catch((err) => {
-            return res.status(422).send({ message: err });
+            return res.status(422).send({ message: "error resolving" });
           });
       }
     );
