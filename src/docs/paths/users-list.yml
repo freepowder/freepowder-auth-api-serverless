@@ -1,0 +1,13 @@
+get:
+  tags:
+    - users
+  summary: get list of users
+  description: Returns the list of users
+  operationId: getUserList
+  responses:
+    "200":
+      description: success
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/users.yml"

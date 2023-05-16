@@ -2,10 +2,6 @@ import { MongoClient } from "mongodb";
 import APP_CONFIG from "../constants/env";
 
 const uri = APP_CONFIG.db.uri;
-const options = {
-  useUnifiedTopology: true,
-  useNewUrlParser: true,
-};
 
 let mongoClient = null;
 let database = null;

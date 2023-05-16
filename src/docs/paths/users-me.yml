@@ -1,0 +1,13 @@
+get:
+  tags:
+    - authentication
+  summary: check authenticate users existence
+  description: Returns the user and the jwt auth token
+  operationId: me
+  responses:
+    "200":
+      description: success
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/auth.yml"

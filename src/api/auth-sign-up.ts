@@ -1,4 +1,3 @@
-import type { RequestHandler } from "express";
 import APP_CONFIG from "../constants/env";
 import jwt from "jsonwebtoken";
 import { hashPassword } from "../common/auth";
@@ -16,7 +15,7 @@ const saveUser = async (user) => {
   return content;
 };
 
-export const signUp: RequestHandler = (req, res, next) => {
+export const signUp = (req, res) => {
   delete req.body.roles;
   const user = req.body;
   user["provider"] = "local";

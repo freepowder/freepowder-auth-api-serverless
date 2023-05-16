@@ -11,5 +11,3 @@ get:
         application/json:
           schema:
             $ref: "../schemas/wierzbianski-list.yml"
-    default:
-      $ref: "../responses/error.yml"

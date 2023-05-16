@@ -1,6 +1,5 @@
 import APP_CONFIG from "./constants/env";
 import express from "express";
-import { Response, Request } from "express";
 import { connector } from "swagger-routes-express";
 import swaggerUi from "swagger-ui-express";
 import SwaggerParser from "@apidevtools/swagger-parser";
@@ -8,21 +7,11 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import morgan from "morgan";
 import { expressjwt } from "express-jwt";
-import compress from "compression";
 import methodOverride from "method-override";
 import cookieParser from "cookie-parser";
-import type { JwtPayload } from "jsonwebtoken";
 import { errorHandler } from "./middleware";
 import * as api from "./api";
 import helmet from "helmet";
-
-declare global {
-  namespace Express {
-    interface Request {
-      auth: JwtPayload;
-    }
-  }
-}
 
 const app = express();
 const start = async () => {
@@ -31,30 +20,7 @@ const start = async () => {
     const apiDefinition = await parser.validate("./src/docs/api.yml");
     const connect = connector(api, apiDefinition);
 
-    const whitelist = APP_CONFIG.whitelist.split(",");
-    app.use(cors({ origin: whitelist }));
-    app.use((req, res, next) => {
-      const origin = req.get("referer");
-      const isWhitelisted = whitelist.find((w) => origin && origin.includes(w));
-      if (isWhitelisted) {
-        res.setHeader("Access-Control-Allow-Origin", "*");
-        res.setHeader(
-          "Access-Control-Allow-Methods",
-          "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-        );
-        res.setHeader(
-          "Access-Control-Allow-Headers",
-          "X-Requested-With,Content-Type,Authorization"
-        );
-        res.setHeader("Access-Control-Allow-Credentials", "true");
-      }
-      // Pass to next layer of middleware
-      if (req.method === "OPTIONS") {
-        res.sendStatus(200);
-      } else {
-        next();
-      }
-    });
+    app.use(cors({ origin: "*" }));
 
     app.use(bodyParser.json());
     app.use(
@@ -73,18 +39,6 @@ const start = async () => {
       })
     );
 
-    app.use(
-      compress({
-        filter(req: Request, res: Response) {
-          return /json|text|javascript|css|font|svg/.test(
-            res.getHeader("Content-Type")
-              ? res.getHeader("Content-Type").toString()
-              : ""
-          );
-        },
-        level: 9,
-      })
-    );
     // body & cookie parser
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));

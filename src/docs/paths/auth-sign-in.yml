@@ -22,5 +22,3 @@ post:
         application/json:
           schema:
             $ref: "../schemas/auth.yml"
-    default:
-      $ref: "../responses/error.yml"

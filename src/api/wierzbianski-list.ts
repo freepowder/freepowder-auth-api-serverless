@@ -1,4 +1,3 @@
-import type { RequestHandler } from "express";
 import { connectToDatabase } from "../common/mongo-db";
 
 export const config = {
@@ -12,9 +11,10 @@ const resolveData = async () => {
   return content;
 };
 
-export const getWierzbianskiContentList: RequestHandler = (req, res, next) => {
+export const getWierzbianskiContentList = (req, res) => {
   resolveData()
     .then((content) => {
+      res.setHeader("Cache-Control", "s-maxage=1, stale-while-revalidate");
       res.status(200).json(content);
     })
     .catch((err) => {

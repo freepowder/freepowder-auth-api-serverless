@@ -1,12 +1,12 @@
 put:
   tags:
-    - wierzbianski
-  summary: Update the content for wierzbianski site
+    - users
+  summary: Update a user
   description: Returns content for the site
-  operationId: setWierzbianskiContent
+  operationId: setUser
   parameters:
     - in: path
-      name: contentId
+      name: userId
       schema:
         type: string
       required: true
@@ -16,6 +16,4 @@ put:
       content:
         application/json:
           schema:
-            $ref: "../schemas/wierzbianski-item.yml"
-    default:
-      $ref: "../responses/error.yml"
+            $ref: "../schemas/user.yml"

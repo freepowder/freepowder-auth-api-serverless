@@ -9,12 +9,18 @@ servers:
 
 paths:
   /auth/signin:
-    $ref: "./paths/sign-in.yml"
+    $ref: "./paths/auth-sign-in.yml"
   /auth/signup:
-    $ref: "./paths/sign-up.yml"
+    $ref: "./paths/auth-sign-up.yml"
   /auth/signout:
-    $ref: "./paths/sign-out.yml"
+    $ref: "./paths/auth-sign-out.yml"
+  /users/me:
+    $ref: "./paths/users-me.yml"
+  /users:
+    $ref: "./paths/users-list.yml"
+  /users/update:
+    $ref: "./paths/users-update.yml"
   /wierzbianski/content:
     $ref: "./paths/wierzbianski-list.yml"
   /wierzbianski/content/{contentId}:
-    $ref: "./paths/wierzbianski-item.yml"
+    $ref: "./paths/wierzbianski-update.yml"
