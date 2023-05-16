@@ -1,5 +1,6 @@
 import { connectToDatabase } from "../common/mongo-db";
 import { verify } from "../common/verify";
+import {RequestHandler} from "express";
 
 const resolveData = async () => {
   const { database } = await connectToDatabase();
@@ -9,7 +10,7 @@ const resolveData = async () => {
   return users;
 };
 
-export const getUserList = (req, res) => {
+export const getUserList: RequestHandler = (req, res) => {
   verify(req).then((isValidUser) => {
     if (isValidUser) {
       resolveData()

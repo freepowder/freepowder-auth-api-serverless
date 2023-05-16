@@ -20,7 +20,7 @@ const start = async () => {
     const apiDefinition = await parser.validate("./src/docs/api.yml");
     const connect = connector(api, apiDefinition);
 
-    app.use(cors({ origin: "*" }));
+    // app.use(cors({ origin: "*" }));
 
     app.use(bodyParser.json());
     app.use(

@@ -1,4 +1,5 @@
 import { connectToDatabase } from "../common/mongo-db";
+import {RequestHandler} from "express";
 
 export const config = {
   runtime: "edge",
@@ -11,7 +12,7 @@ const resolveData = async () => {
   return content;
 };
 
-export const getWierzbianskiContentList = (req, res) => {
+export const getWierzbianskiContentList: RequestHandler = (req, res) => {
   resolveData()
     .then((content) => {
       res.setHeader("Cache-Control", "s-maxage=1, stale-while-revalidate");

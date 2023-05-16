@@ -1,8 +1,9 @@
 import jwt from "jsonwebtoken";
 import APP_CONFIG from "../constants/env";
 import { authenticate } from "../common/auth";
+import {RequestHandler} from "express";
 
-export const signIn = (req, res) => {
+export const signIn: RequestHandler = (req, res) => {
   authenticate(req.body.email, req.body.password)
     .then((user) => {
       user.password = undefined;

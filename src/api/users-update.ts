@@ -1,6 +1,7 @@
 import { verify } from "../common/verify";
 import { connectToDatabase } from "../common/mongo-db";
 import { ObjectId } from "mongodb";
+import {RequestHandler} from "express";
 
 const resolveUser = async (id) => {
   const { database } = await connectToDatabase();
@@ -16,7 +17,7 @@ const saveUser = async (query, updatedContent) => {
   return u;
 };
 
-export const setUser = (req, res) => {
+export const setUser: RequestHandler = (req, res) => {
   verify(req).then((isValidUser) => {
     if (isValidUser) {
       resolveUser(req["body"]._id)

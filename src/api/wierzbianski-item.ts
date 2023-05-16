@@ -1,6 +1,7 @@
 import { connectToDatabase } from "../common/mongo-db";
 import { ObjectId } from "mongodb";
 import { verify } from "../common/verify";
+import {RequestHandler} from "express";
 
 const resolveContent = async (id) => {
   const { database } = await connectToDatabase();
@@ -16,7 +17,7 @@ const saveContent = async (query, updatedContent) => {
   return content;
 };
 
-export const setWierzbianskiContent = (req, res) => {
+export const setWierzbianskiContent: RequestHandler = (req, res) => {
   verify(req).then((isValidUser) => {
     if (isValidUser) {
       resolveContent(req["body"]._id)

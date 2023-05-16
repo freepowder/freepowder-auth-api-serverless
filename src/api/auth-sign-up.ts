@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import { hashPassword } from "../common/auth";
 import crypto from "crypto";
 import { connectToDatabase } from "../common/mongo-db";
+import {RequestHandler} from "express";
 
 const saveUser = async (user) => {
   const { database } = await connectToDatabase();
@@ -15,7 +16,7 @@ const saveUser = async (user) => {
   return content;
 };
 
-export const signUp = (req, res) => {
+export const signUp: RequestHandler = (req, res) => {
   delete req.body.roles;
   const user = req.body;
   user["provider"] = "local";
